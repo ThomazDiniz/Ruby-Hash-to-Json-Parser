@@ -268,11 +268,11 @@
                         const nextChar = rubyCode[pos + keyword.length];
                         if (!nextChar || !/[a-zA-Z0-9_]/.test(nextChar)) {
                             pos += keyword.length;
-                            return value;
+                            return { found: true, value: value };
                         }
                     }
                 }
-                return null;
+                return { found: false, value: null };
             }
 
             function parseValue() {
@@ -306,7 +306,7 @@
 
                 // Keyword (nil, true, false)
                 const keyword = parseKeyword();
-                if (keyword !== null) return keyword;
+                if (keyword.found) return keyword.value;
 
                 throw new Error(`Caractere inesperado na posição ${pos}: ${rubyCode[pos]}`);
             }
